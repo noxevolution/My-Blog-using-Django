@@ -14,8 +14,19 @@ def search(request):
             Q(overview__icontains=query)
         ).distinct()
 
+    paginator = Paginator(queryset, 4)
+    page_request_var = 'page'
+    page = request.GET.get(page_request_var)
+
+    try:
+        paginated_queryset = paginator.page(page)
+    except PageNotAnInteger:
+        paginated_queryset = paginator.page(1)
+    except EmptyPage:
+        paginated_queryset = paginator.page(paginator.num_pages)
+
     context = {
-        'queryset': queryset
+        'queryset': paginated_queryset
     }
 
     return render(request, 'search_results.html', context)
