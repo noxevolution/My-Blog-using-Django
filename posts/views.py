@@ -26,7 +26,8 @@ def search(request):
         paginated_queryset = paginator.page(paginator.num_pages)
 
     context = {
-        'queryset': paginated_queryset
+        'queryset': paginated_queryset,
+        'post_request_var': page_request_var
     }
 
     return render(request, 'search_results.html', context)
